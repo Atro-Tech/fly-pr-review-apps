@@ -41,14 +41,15 @@ if ! flyctl status --app "$app"; then
   if [ -n "$INPUT_SECRETS" ]; then
     echo $INPUT_SECRETS | tr " " "\n" | flyctl secrets import --app "$app"
   fi
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
+  # Attach postgres cluster to the app if specified.
+  if [ -n "$INPUT_POSTGRES" ]; then
+    flyctl postgres attach --app "$app" --region "$region" --postgres-app "$INPUT_POSTGRES" || true
+  fi
+  # Initial deployment
+  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --strategy immediate
 elif [ "$INPUT_UPDATE" != "false" ]; then
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
-fi
-
-# Attach postgres cluster to the app if specified.
-if [ -n "$INPUT_POSTGRES" ]; then
-  flyctl postgres attach --postgres-app "$INPUT_POSTGRES" || true
+  # Deployment when the PR was updated
+  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --strategy immediate
 fi
 
 # Make some info available to the GitHub workflow.
