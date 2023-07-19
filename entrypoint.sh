@@ -52,9 +52,15 @@ elif [ "$INPUT_UPDATE" != "false" ]; then
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image"  --remote-only --strategy immediate
 fi
 
+if [ -n "$INPUT_CERT_HOSTNAME" ]; then
+  if ! flyctl certs show --app "$app" ; then
+    flyctl certs add -a "$app" "$INPUT_CERT_HOSTNAME"
+  fi
+fi
+
 # Make some info available to the GitHub workflow.
 fly status --app "$app" --json >status.json
-hostname=$(jq -r .Hostname status.json)
+hostname=${INPUT_CERT_HOSTNAME:-$(jq -r .Hostname status.json)}
 appid=$(jq -r .ID status.json)
 echo "::set-output name=hostname::$hostname"
 echo "::set-output name=url::https://$hostname"
