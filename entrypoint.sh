@@ -46,10 +46,10 @@ if ! flyctl status --app "$app"; then
     flyctl postgres attach -y --app "$app" "$INPUT_POSTGRES"
   fi
   # Initial deployment
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --strategy immediate
+  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --remote-only --strategy immediate
 elif [ "$INPUT_UPDATE" != "false" ]; then
   # Deployment when the PR was updated
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --strategy immediate
+  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image"  --remote-only --strategy immediate
 fi
 
 # Make some info available to the GitHub workflow.
