@@ -53,7 +53,7 @@ elif [ "$INPUT_UPDATE" != "false" ]; then
 fi
 
 if [ -n "$INPUT_CERT_HOSTNAME" ]; then
-  if ! flyctl certs show --app "$app" ; then
+  if ! flyctl certs show --app "$app" "$INPUT_CERT_HOSTNAME"; then
     flyctl certs add -a "$app" "$INPUT_CERT_HOSTNAME"
   fi
 fi
