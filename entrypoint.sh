@@ -43,7 +43,7 @@ if ! flyctl status --app "$app"; then
   fi
   # Attach postgres cluster to the app if specified.
   if [ -n "$INPUT_POSTGRES" ]; then
-    flyctl postgres attach --app "$app" --postgres-app "$INPUT_POSTGRES"
+    flyctl postgres attach --app "$app" "$INPUT_POSTGRES"
   fi
   # Initial deployment
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --strategy immediate
