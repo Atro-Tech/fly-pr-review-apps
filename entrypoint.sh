@@ -63,6 +63,6 @@ fly status --app "$app" --json >status.json
 hostname=${INPUT_CERT_HOSTNAME:-$(jq -r .Hostname status.json)}
 appid=$(jq -r .ID status.json)
 echo "Using GITHUB_OUTPUT: $GITHUB_OUTPUT"
-echo "{hostname}={$hostname}" >> "$GITHUB_OUTPUT"
-echo "{url}={https://$hostname}" >> "$GITHUB_OUTPUT"
-echo "{id}={$appid}" >> "$GITHUB_OUTPUT"
+echo "hostname=${hostname}" >> "$GITHUB_OUTPUT"
+echo "url=https://${hostname}" >> "$GITHUB_OUTPUT"
+echo "id=${appid}" >> "$GITHUB_OUTPUT"
