@@ -46,7 +46,7 @@ if ! flyctl status --app "$app"; then
     flyctl postgres attach -y --app "$app" "$INPUT_POSTGRES"
   fi
   # Initial deployment
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --remote-only --strategy immediate --vm-memory 512
+  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --remote-only --strategy immediate --vm-memory 512 --max-concurrent 1
 elif [ "$INPUT_UPDATE" != "false" ]; then
   # Deployment when the PR was updated
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image"  --remote-only --strategy immediate
