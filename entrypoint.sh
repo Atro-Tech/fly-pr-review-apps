@@ -58,7 +58,7 @@ if [ -n "$INPUT_CERT_HOSTNAME" ]; then
   fi
 fi
 
-fly scale --app "$app" count 1
+fly scale --app "$app" --yes count 1
 
 # Make some info available to the GitHub workflow.
 fly status --app "$app" --json >status.json
